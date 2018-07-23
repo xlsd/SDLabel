@@ -20,20 +20,13 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
 
 
 @implementation SDLabel {
-    UIImageView *_contentView;
-    NSInteger drawFlag;
+    NSInteger _drawFlag;
 }
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        drawFlag = arc4random();
-        _contentView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height+10)];
-        _contentView.contentMode = UIViewContentModeScaleAspectFit;
-        _contentView.tag = NSIntegerMin;
-        _contentView.clipsToBounds = YES;
-        [self addSubview:_contentView];
-        
+        _drawFlag = arc4random();
         self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = NO;
@@ -46,26 +39,17 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
     return self;
 }
 
-//Fix Coretext height
-- (void)setFrame:(CGRect)frame{
-    if (!CGSizeEqualToSize(_contentView.image.size, frame.size)) {
-        _contentView.image = nil;
-    }
-    _contentView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height + 10);
-    [super setFrame:frame];
-}
-
 //使用coretext将文本绘制到图片。
 - (void)setText:(NSString *)text{
     if (text == nil || text.length <= 0) {
-        _contentView.image = nil;
+        self.layer.contents = nil;
         return;
     }
     [self draw:text];
 }
 
 - (void)draw:(NSString *)text {
-    NSInteger flag = drawFlag;
+    NSInteger flag = _drawFlag;
     __block CGSize size = self.frame.size;
     UIColor *backgroundColor = self.backgroundColor;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -132,16 +116,9 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
                 CFRelease(framesetter);
                 [[attributedStr mutableString] setString:@""];
                 
-                if (self->drawFlag==flag) {
+                if (self->_drawFlag == flag) {
                     if ([temp isEqualToString:text]) {
-                        if (self->_contentView.width!=screenShotimage.size.width) {
-                            self->_contentView.width = screenShotimage.size.width;
-                        }
-                        if (self->_contentView.height!=screenShotimage.size.height) {
-                            self->_contentView.height = screenShotimage.size.height;
-                        }
-                        self->_contentView.image = nil;
-                        self->_contentView.image = screenShotimage;
+                        self.layer.contents = (__bridge id _Nullable)(screenShotimage.CGImage);
                     }
                 }
             });
@@ -175,7 +152,7 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
         CTLineRef line = CFArrayGetValueAtIndex(lines, lineIndex);
         
         CGFloat descent = 0.0f;
-        CGFloat ascent = 0.0f;
+        CGFloat ascent = 20.0f;
         CGFloat lineLeading;
         CTLineGetTypographicBounds((CTLineRef)line, &ascent, &descent, &lineLeading);
         
@@ -250,9 +227,9 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
 }
 
 - (void)clear{
-    drawFlag = arc4random();
+    _drawFlag = arc4random();
     _text = @"";
-    _contentView.image = nil;
+    self.layer.contents = nil;
     [self removeSubviewExceptTag:NSIntegerMin];
 }
 
@@ -268,7 +245,6 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
 }
 
 - (void)removeFromSuperview{
-    _contentView.image = nil;
     [super removeFromSuperview];
 }
 
