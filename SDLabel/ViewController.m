@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SDLabel.h"
+#import "NSString+YTJAddtions.h"
 
 @interface ViewController ()
 
@@ -17,13 +18,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSString *tex = @"在当代中国音乐文学史上，在当代中国音乐文学史上，在当代中在当代中国音乐文学史上，在当代中在当代中国音乐文学史上，在当代中在当代中国音乐文学史上，在当代中在当代中国音乐文学史上，在当代中";
     
-    SDLabel *label = [[SDLabel alloc] initWithFrame:CGRectMake(15, 100, [UIScreen mainScreen].bounds.size.width - 15 * 2, 300)];
+    CGFloat height = [tex sizeWithConstrainedToWidth:[UIScreen mainScreen].bounds.size.width - 15 * 2 fromFont:[UIFont systemFontOfSize:18] lineSpace:5].height;
+    
+    NSInteger num = [tex numberOfLinesWithConstrainedToWidth:[UIScreen mainScreen].bounds.size.width - 15 * 2 fromFont:[UIFont systemFontOfSize:18] lineSpace:5];
+    
+    CGFloat labelheight = height / num;
+    
+    NSInteger row = num >= 2 ? 2 : num;
+    
+    SDLabel *label = [[SDLabel alloc] initWithFrame:CGRectMake(15, 100, [UIScreen mainScreen].bounds.size.width - 15 * 2, labelheight * row)];
     
     label.font = [UIFont systemFontOfSize:18];
     label.lineSpace = 5;
-    label.numberOfLines = 3;
-    label.text = @"在当代中国音乐文学史上，人们不能忘记这样一位作家和诗人，自1948年以来的半个世纪中，他创作的《让我们荡起双桨》、《思念》、《难忘今霄》、《我的祖国》等众多词作不仅广为传唱，而且长久不衰，成为时代的见证。然而，谁能想象出这些优美朴实的歌词，竟出自一位满脸花皱纹，一副金丝眼镜后面的一双小眼睛经常闪着智慧灵光的小老头之手笔呢？在当代中国音乐文学史上，人们不能忘记这样一位作家和诗人，自1948年以来的半个世纪中，他创作的《让我们荡起双桨》、《思念》、《难忘今霄》、《我的祖国》等众多词作不仅广为传唱，而且长久不衰，成为时代的见证。然而，谁能想象出这些优美朴实的歌词，竟出自一位满脸花皱纹，一副金丝眼镜后面的一双小眼睛经常闪着智慧灵光的小老头之手笔呢？";
+    label.numberOfLines = 2;
+    label.text = tex;
     label.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:label];
 }

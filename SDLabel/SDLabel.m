@@ -29,7 +29,6 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
         _drawFlag = arc4random();
         self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor clearColor];
-        self.clipsToBounds = NO;
         _textAlignment = NSTextAlignmentLeft;
         _textColor = [UIColor blackColor];
         _font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17];
@@ -39,10 +38,15 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
     return self;
 }
 
+- (void)setFrame:(CGRect)frame {
+    CGRect rect = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height + 5);
+    [super setFrame:rect];
+}
+
 //使用coretext将文本绘制到图片。
 - (void)setText:(NSString *)text{
     if (text == nil || text.length <= 0) {
-        self.layer.contents = nil;
+        self.layer.contents = NULL;
         return;
     }
     [self draw:text];
@@ -55,8 +59,6 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *temp = text;
         self->_text = text;
-        size.height += 10;
-        
         // 确定context大小
         UIGraphicsBeginImageContextWithOptions(size, ![backgroundColor isEqual:[UIColor clearColor]], 0);
         CGContextRef context = UIGraphicsGetCurrentContext();
@@ -102,14 +104,14 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
         //Draw the frame
         CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attributedString);
         
-        CGRect rect = CGRectMake(0, 5,(size.width),(size.height-5));
+        CGRect rect = CGRectMake(0, 0,(size.width),(size.height - 5));
         
         if ([temp isEqualToString:text]) {
             [self drawFramesetter:framesetter attributedString:attributedStr textRange:CFRangeMake(0, text.length) inRect:rect context:context];
             CGContextSetTextMatrix(context,CGAffineTransformIdentity);
             CGContextTranslateCTM(context,0,size.height);
             CGContextScaleCTM(context,1.0,-1.0);
-            UIImage *screenShotimage = UIGraphicsGetImageFromCurrentImageContext();
+            UIImage *textImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             dispatch_async(dispatch_get_main_queue(), ^{
                 CFRelease(font);
@@ -118,7 +120,8 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
                 
                 if (self->_drawFlag == flag) {
                     if ([temp isEqualToString:text]) {
-                        self.layer.contents = (__bridge id _Nullable)(screenShotimage.CGImage);
+                        self.layer.contents = (__bridge id _Nullable)(textImage.CGImage);
+                        [self invalidateIntrinsicContentSize];
                     }
                 }
             });
@@ -152,7 +155,7 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
         CTLineRef line = CFArrayGetValueAtIndex(lines, lineIndex);
         
         CGFloat descent = 0.0f;
-        CGFloat ascent = 20.0f;
+        CGFloat ascent = 0.0f;
         CGFloat lineLeading;
         CTLineGetTypographicBounds((CTLineRef)line, &ascent, &descent, &lineLeading);
         
@@ -229,7 +232,7 @@ static inline CGFLOAT_TYPE CGFloat_ceil(CGFLOAT_TYPE cgfloat) {
 - (void)clear{
     _drawFlag = arc4random();
     _text = @"";
-    self.layer.contents = nil;
+    self.layer.contents = NULL;
     [self removeSubviewExceptTag:NSIntegerMin];
 }
 

@@ -15,6 +15,7 @@
 		E10E72D22102E00A0050513C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E10E72D12102E00A0050513C /* main.m */; };
 		E10E72DA2102E0330050513C /* SDLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E10E72D92102E0330050513C /* SDLabel.m */; };
 		E10E72DD2102E0E40050513C /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = E10E72DC2102E0E40050513C /* UIView+Additions.m */; };
+		E1BA3A3F2107175900816958 /* NSString+YTJAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = E1BA3A3E2107175900816958 /* NSString+YTJAddtions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		E10E72D92102E0330050513C /* SDLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLabel.m; sourceTree = "<group>"; };
 		E10E72DB2102E0E40050513C /* UIView+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		E10E72DC2102E0E40050513C /* UIView+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
+		E1BA3A3D2107175900816958 /* NSString+YTJAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+YTJAddtions.h"; sourceTree = "<group>"; };
+		E1BA3A3E2107175900816958 /* NSString+YTJAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+YTJAddtions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +71,8 @@
 				E10E72C32102E0080050513C /* AppDelegate.m */,
 				E10E72C52102E0090050513C /* ViewController.h */,
 				E10E72C62102E0090050513C /* ViewController.m */,
+				E1BA3A3D2107175900816958 /* NSString+YTJAddtions.h */,
+				E1BA3A3E2107175900816958 /* NSString+YTJAddtions.m */,
 				E10E72D82102E0330050513C /* SDLabel.h */,
 				E10E72D92102E0330050513C /* SDLabel.m */,
 				E10E72DB2102E0E40050513C /* UIView+Additions.h */,
@@ -154,6 +159,7 @@
 				E10E72C72102E0090050513C /* ViewController.m in Sources */,
 				E10E72D22102E00A0050513C /* main.m in Sources */,
 				E10E72C42102E0090050513C /* AppDelegate.m in Sources */,
+				E1BA3A3F2107175900816958 /* NSString+YTJAddtions.m in Sources */,
 				E10E72DD2102E0E40050513C /* UIView+Additions.m in Sources */,
 				E10E72DA2102E0330050513C /* SDLabel.m in Sources */,
 			);
